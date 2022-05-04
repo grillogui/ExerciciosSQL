@@ -22,6 +22,7 @@ namespace BlogPessoalTeste.Testes.data
         }
 
         [TestMethod]
+        [Ignore]
         public void InserirNovoUsuarioNoBancoRetornaUsuario()
         {
             UsuarioModelo Usuario = new UsuarioModelo();

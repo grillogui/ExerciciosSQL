@@ -1,4 +1,6 @@
 using BlogPessoal.src.data;
+using BlogPessoal.src.repositorios;
+using BlogPessoal.src.repositorios.implementacoes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +35,12 @@ namespace BlogPessoal
 
             services.AddDbContext<BlogPessoalContexto>(opt => opt.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
+            // Repositorios
+            services.AddScoped<IUsuario, UsuarioRepositorio>();
+            services.AddScoped<ITema, TemaRepositorio>();
+            services.AddScoped<IPostagem, PostagemRepositorio>();
+
+
             services.AddControllers();
         }
 
@@ -55,5 +63,7 @@ namespace BlogPessoal
                 endpoints.MapControllers();
             });
         }
+
+
     }
 }

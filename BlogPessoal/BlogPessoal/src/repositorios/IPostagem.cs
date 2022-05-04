@@ -11,8 +11,6 @@ namespace BlogPessoal.src.repositorios
     /// <para>Data: 29/04/2022</para>
     /// </summary>
     /// 
-    public interface IPostagem
-    {
         public interface IPostagem
         {
             void NovaPostagem(NovaPostagemDTO postagem);
@@ -23,5 +21,5 @@ namespace BlogPessoal.src.repositorios
             List<PostagemModelo> PegarPostagensPorPesquisa(string titulo, string descricaoTema, string nomeCriador);
 
         }
-    }
+    
 }

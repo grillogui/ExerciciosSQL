@@ -44,6 +44,9 @@ namespace BlogPessoal.src.dtos
 
     public class AtualizarPostagemDTO
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required, StringLength(30)]
         public string Titulo { get; set; }
 
@@ -56,8 +59,9 @@ namespace BlogPessoal.src.dtos
         public string DescricaoTema { get; set; }
 
 
-        public AtualizarPostagemDTO(string titulo, string descricao, string foto, string descricaoTema)
+        public AtualizarPostagemDTO(string titulo, string descricao, string foto, string descricaoTema, int id)
         {
+            Id = id;
             Titulo = titulo;
             Descricao = descricao;
             Foto = foto;
