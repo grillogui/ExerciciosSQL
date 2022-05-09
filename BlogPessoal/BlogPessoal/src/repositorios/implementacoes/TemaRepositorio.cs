@@ -18,23 +18,54 @@ namespace BlogPessoal.src.repositorios.implementacoes
     public class TemaRepositorio : ITema
     {
         #region Atributos
+
         private readonly BlogPessoalContexto _contexto;
+
         #endregion Atributos
 
 
         #region Construtores
+
         public TemaRepositorio(BlogPessoalContexto contexto)
         {
             _contexto = contexto;
         }
+
         #endregion Construtores
 
 
-        #region Metodos
+        #region Métodos
+
+        public List<TemaModelo> PegarTodosTemas()
+        {
+            return _contexto.Temas.ToList();
+        }
+
+        public TemaModelo PegarTemaPeloId(int id)
+        {
+            return _contexto.Temas.FirstOrDefault(t => t.Id == id);
+        }
+
+        public List<TemaModelo> PegarTemasPelaDescricao(string descricao)
+        {
+            return _contexto.Temas
+                            .Where(u => u.Descricao.Contains(descricao))
+                            .ToList();
+        }
+
+        public void NovoTema(NovoTemaDTO tema)
+        {
+            _contexto.Temas.Add(new TemaModelo
+            {
+                Descricao = tema.Descricao
+            });
+
+            _contexto.SaveChanges();
+        }
 
         public void AtualizarTema(AtualizarTemaDTO tema)
         {
-            var temaExistente = PegarTemaPeloId(tema.id);
+            var temaExistente = PegarTemaPeloId(tema.Id);
             temaExistente.Descricao = tema.Descricao;
             _contexto.Temas.Update(temaExistente);
             _contexto.SaveChanges();
@@ -46,29 +77,6 @@ namespace BlogPessoal.src.repositorios.implementacoes
             _contexto.SaveChanges();
         }
 
-        public void NovoTema(NovoTemaDTO tema)
-        {
-            _contexto.Temas.Add(new TemaModelo
-            {
-                Descricao = tema.Descricao
-            });
-            _contexto.SaveChanges();
-        }
-
-        public List<TemaModelo> PegarTemaPelaDescricao(string descricao)
-        {
-            return _contexto.Temas.Where(u => u.Descricao.Contains(descricao)).ToList();
-        }
-
-        public TemaModelo PegarTemaPeloId(int id)
-        {
-            return _contexto.Temas.FirstOrDefault(u => u.Id == id);
-        }
-        public List<TemaModelo> PegarTodosTemas()
-        {
-            return _contexto.Temas.ToList();
-        }
-
+        #endregion Métodos
     }
-    #endregion Metodos
 }
