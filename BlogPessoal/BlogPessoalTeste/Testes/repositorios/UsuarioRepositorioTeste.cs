@@ -3,6 +3,7 @@ using BlogPessoal.src.data;
 using BlogPessoal.src.dtos;
 using BlogPessoal.src.repositorios;
 using BlogPessoal.src.repositorios.implementacoes;
+using BlogPessoal.src.utilidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,25 +32,29 @@ namespace BlogPessoalTest.Testes.repositorios
             "Guilherme Grillo",
             "guigs@email.com",
             "12343652",
-            "URLFOTO"));
+            "URLFOTO",
+           TipoUsuario.NORMAL));
             _repositorio.NovoUsuario(
             new NovoUsuarioDTO(
             "Carol Polimeno",
             "cabs@email.com",
             "134652",
-            "URLFOTO"));
+            "URLFOTO",
+            TipoUsuario.NORMAL));
             _repositorio.NovoUsuario(
             new NovoUsuarioDTO(
             "Pamela Alencar",
             "pamits@email.com",
             "134652",
-            "URLFOTO"));
+            "URLFOTO",
+            TipoUsuario.NORMAL));
             _repositorio.NovoUsuario(
             new NovoUsuarioDTO(
             "Junior Tavarez",
             "juninho@email.com",
             "134652",
-            "URLFOTO"));
+            "URLFOTO",
+            TipoUsuario.NORMAL));
             //WHEN - Quando pesquiso lista total
             //THEN - Então recebo 4 usuarios
             Assert.AreEqual(4, _contexto.Usuarios.Count());
@@ -63,7 +68,8 @@ namespace BlogPessoalTest.Testes.repositorios
             "Calleri",
             "tocanele@email.com",
             "134652",
-            "URLFOTO"));
+            "URLFOTO",
+            TipoUsuario.NORMAL));
             //WHEN - Quando pesquiso pelo email deste usuario
             var user = _repositorio.PegarUsuarioPeloEmail("tocanele@email.com");
             //THEN - Então obtenho um usuario
@@ -78,7 +84,8 @@ namespace BlogPessoalTest.Testes.repositorios
             "Jorel",
             "jojo@email.com",
             "134652",
-            "URLFOTO"));
+            "URLFOTO",
+            TipoUsuario.NORMAL));
             //WHEN - Quando pesquiso pelo id 6
             var user = _repositorio.PegarUsuarioPeloId(_contexto.Usuarios.FirstOrDefault(u => u.Email == "jojo@email.com").Id);
             //THEN - Então, deve me retornar um elemento não nulo
@@ -95,7 +102,8 @@ namespace BlogPessoalTest.Testes.repositorios
             "Bruno",
             "brunin@email.com",
             "134652",
-            "URLFOTO"));
+            "URLFOTO",
+            TipoUsuario.NORMAL));
             //WHEN - Quando atualizamos o usuario
             var antigo =
             _repositorio.PegarUsuarioPeloEmail("brunin@email.com");
