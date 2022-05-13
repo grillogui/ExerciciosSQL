@@ -18,6 +18,7 @@ using BlogPessoal.src.servicos.implementacoes;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace BlogPessoal
 {
@@ -66,6 +67,13 @@ namespace BlogPessoal
                     ValidateAudience = false
                 };
             });
+
+            // Configuração Swagger
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new OpenApiInfo { Title = "Blog Pessoal", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +84,8 @@ namespace BlogPessoal
             {
                 contexto.Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogPessoal v1"));
             }
 
             // Ambiente de produção

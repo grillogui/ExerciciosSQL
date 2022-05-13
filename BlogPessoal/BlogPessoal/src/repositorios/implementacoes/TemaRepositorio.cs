@@ -1,8 +1,10 @@
 ﻿using BlogPessoal.src.data;
 using BlogPessoal.src.dtos;
 using BlogPessoal.src.modelos;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlogPessoal.src.repositorios.implementacoes
 {
@@ -36,45 +38,45 @@ namespace BlogPessoal.src.repositorios.implementacoes
 
         #region Métodos
 
-        public List<TemaModelo> PegarTodosTemas()
+        public async Task<List<TemaModelo>> PegarTodosTemas()
         {
-            return _contexto.Temas.ToList();
+            return await _contexto.Temas.ToListAsync();
         }
 
-        public TemaModelo PegarTemaPeloId(int id)
+        public async Task<TemaModelo> PegarTemaPeloIdAsync(int id)
         {
-            return _contexto.Temas.FirstOrDefault(t => t.Id == id);
+            return await _contexto.Temas.FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public List<TemaModelo> PegarTemasPelaDescricao(string descricao)
+        public async Task<List<TemaModelo>> PegarTemasPelaDescricaoAsync(string descricao)
         {
-            return _contexto.Temas
-                            .Where(u => u.Descricao.Contains(descricao))
-                            .ToList();
+            return await _contexto.Temas
+                .Where(t => t.Descricao.Contains(descricao))
+                .ToListAsync();
         }
 
-        public void NovoTema(NovoTemaDTO tema)
+        public async Task NovoTemaAsync(NovoTemaDTO tema)
         {
-            _contexto.Temas.Add(new TemaModelo
+            await _contexto.Temas.AddAsync(new TemaModelo
             {
                 Descricao = tema.Descricao
             });
 
-            _contexto.SaveChanges();
+            await _contexto.SaveChangesAsync();
         }
 
-        public void AtualizarTema(AtualizarTemaDTO tema)
+        public async Task AtualizarTemaAsync(AtualizarTemaDTO tema)
         {
-            var temaExistente = PegarTemaPeloId(tema.Id);
+            var temaExistente = await PegarTemaPeloIdAsync(tema.Id);
             temaExistente.Descricao = tema.Descricao;
             _contexto.Temas.Update(temaExistente);
-            _contexto.SaveChanges();
+            await _contexto.SaveChangesAsync();
         }
 
-        public void DeletarTema(int id)
+        public async Task DeletarTemaAsync(int id)
         {
-            _contexto.Temas.Remove(PegarTemaPeloId(id));
-            _contexto.SaveChanges();
+            _contexto.Temas.Remove(await PegarTemaPeloIdAsync(id));
+            await _contexto.SaveChangesAsync();
         }
 
         #endregion Métodos
