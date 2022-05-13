@@ -37,6 +37,10 @@ namespace BlogPessoal.src.repositorios.implementacoes
 
 
         #region Métodos
+        public async Task<List<TemaModelo>> PegarTodosTemasAsync()
+        {
+            return await _contexto.Temas.ToListAsync();
+        }
 
         public async Task<List<TemaModelo>> PegarTodosTemas()
         {
