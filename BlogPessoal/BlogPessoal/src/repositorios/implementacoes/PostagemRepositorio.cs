@@ -32,6 +32,11 @@ namespace BlogPessoal.src.repositorios.implementacoes
 
 
         #region Métodos
+
+        /// <summary>
+        /// <para>Resumo: Método assíncrono para atualizar uma postagem</para>
+        /// </summary>
+        /// <param name="postagem">AtualizarPostagemDTO</param>
         public async Task AtualizarPostagemAsync(AtualizarPostagemDTO postagem)
         {
             var postagemExistente = await PegarPostagemPeloIdAsync(postagem.Id);
@@ -43,12 +48,21 @@ namespace BlogPessoal.src.repositorios.implementacoes
             await _contexto.SaveChangesAsync();
         }
 
+
+        /// <summary>
+        /// <para>Resumo: Método assíncrono para deletar uma postagem</para>
+        /// </summary>
+        /// <param name="id">Id da postagem</param>
         public async Task DeletarPostagemAsync(int id)
         {
             _contexto.Postagens.Remove(await PegarPostagemPeloIdAsync(id));
             await _contexto.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// <para>Resumo: Método assíncrono para salvar uma nova postagem</para>
+        /// </summary>
+        /// <param name="postagem">NovaPostagemDTO</param>
         public async Task NovaPostagemAsync(NovaPostagemDTO postagem)
         {
             await _contexto.Postagens.AddAsync(new PostagemModelo
@@ -62,6 +76,12 @@ namespace BlogPessoal.src.repositorios.implementacoes
             await _contexto.SaveChangesAsync();
         }
 
+
+        /// <summary>
+        /// <para>Resumo: Método assíncrono para pegar uma postagem pelo Id</para>
+        /// </summary>
+        /// <param name="id">Id da postagem</param>
+        /// <return>PostagemModelo</return>
         public async Task<PostagemModelo> PegarPostagemPeloIdAsync(int id)
         {
             return await _contexto.Postagens
@@ -70,9 +90,17 @@ namespace BlogPessoal.src.repositorios.implementacoes
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<PostagemModelo>> PegarPostagensPorPesquisaAsync(string titulo, string descricaoTema, string nomeCriador)
+
+        /// <summary>
+        /// <para>Resumo: Método assíncrono para pegar pegar postagens por pesquisa</para>
+        /// </summary>
+        /// <param name="tituloPostagem">Titulo da postagem</param>
+        /// <param name="descricaoTema">Descrição do tema</param>
+        /// <param name="emailCriador">Nome do criador</param>
+        /// <return>List PostagemModelo</return>
+        public async Task<List<PostagemModelo>> PegarPostagensPorPesquisaAsync(string tituloPostagem, string descricaoTema, string emailCriador)
         {
-            switch (titulo, descricaoTema, nomeCriador)
+            switch (tituloPostagem, descricaoTema, emailCriador)
             {
                 case (null, null, null):
                     return await PegarTodasPostagensAsync();
@@ -81,7 +109,7 @@ namespace BlogPessoal.src.repositorios.implementacoes
                     return await _contexto.Postagens
                     .Include(p => p.Tema)
                     .Include(p => p.Criador)
-                    .Where(p => p.Criador.Nome.Contains(nomeCriador))
+                    .Where(p => p.Criador.Email.Contains(emailCriador))
                     .ToListAsync();
 
                 case (null, _, null):
@@ -95,7 +123,7 @@ namespace BlogPessoal.src.repositorios.implementacoes
                     return await _contexto.Postagens
                     .Include(p => p.Tema)
                     .Include(p => p.Criador)
-                    .Where(p => p.Titulo.Contains(titulo))
+                    .Where(p => p.Titulo.Contains(tituloPostagem))
                     .ToListAsync();
 
                 case (_, _, null):
@@ -103,7 +131,7 @@ namespace BlogPessoal.src.repositorios.implementacoes
                     .Include(p => p.Tema)
                     .Include(p => p.Criador)
                     .Where(p =>
-                    p.Titulo.Contains(titulo) &
+                    p.Titulo.Contains(tituloPostagem) &
                     p.Tema.Descricao.Contains(descricaoTema))
                     .ToListAsync();
 
@@ -113,7 +141,7 @@ namespace BlogPessoal.src.repositorios.implementacoes
                     .Include(p => p.Criador)
                     .Where(p =>
                     p.Tema.Descricao.Contains(descricaoTema) &
-                    p.Criador.Nome.Contains(nomeCriador))
+                    p.Criador.Nome.Contains(emailCriador))
                     .ToListAsync();
 
                 case (_, null, _):
@@ -121,8 +149,8 @@ namespace BlogPessoal.src.repositorios.implementacoes
                     .Include(p => p.Tema)
                     .Include(p => p.Criador)
                     .Where(p =>
-                    p.Titulo.Contains(titulo) &
-                    p.Criador.Nome.Contains(nomeCriador))
+                    p.Titulo.Contains(tituloPostagem) &
+                    p.Criador.Email.Contains(emailCriador))
                     .ToListAsync();
 
                 case (_, _, _):
@@ -130,17 +158,22 @@ namespace BlogPessoal.src.repositorios.implementacoes
                     .Include(p => p.Tema)
                     .Include(p => p.Criador)
                     .Where(p =>
-                    p.Titulo.Contains(titulo) |
+                    p.Titulo.Contains(tituloPostagem) |
                     p.Tema.Descricao.Contains(descricaoTema) |
-                    p.Criador.Nome.Contains(nomeCriador))
+                    p.Criador.Email.Contains(emailCriador))
                     .ToListAsync();
             }
         }
 
+
+        /// <summary>
+        /// <para>Resumo: Método assíncrono para pegar todas postagens</para>
+        /// </summary>
+        /// <return>Lista PostagemModelo></return>
         public async Task<List<PostagemModelo>> PegarTodasPostagensAsync()
         {
             return await _contexto.Postagens
-                .ToListAsync();
+            .ToListAsync();
         }
         #endregion Métodos
     }
